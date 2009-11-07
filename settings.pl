@@ -1,0 +1,10 @@
+#MySQL database settings
+$platform = "mysql";
+$database = "perl";
+$host = "localhost";
+$port = "3306";
+$tablename = "pl_db";
+$contentname = "pl_content";
+$user = "root";
+$pw = "speeddyy5";
+$dsn = "dbi:$platform:$database:$host:$port";

@@ -1,0 +1,26 @@
+minPost is a simple, minimal (and still in beta) CMS/blog for a website. It is writen in Perl, uses a MySQL database (info below) and the MooTools javascript framework to create a minimal interface with a few special effects.
+
+Please edit the settings in settings.pl to fit your server setting.
+
+MySQL database:
+for the first release you will need only 2 tables in your database. Please edit the settings.pl page to fir your servers settings.
+
+MySQL querys for the tables:
+
+CREATE TABLE IF NOT EXISTS `pl_content` (
+  `id` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `name` text NOT NULL,
+  `post` text NOT NULL,
+  KEY `id` (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE IF NOT EXISTS `pl_db` (
+  `id` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `name` text NOT NULL,
+  `email` text NOT NULL,
+  `post` text NOT NULL,
+  KEY `date` (`date`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
