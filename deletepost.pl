@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 ################################################
-#minPost 0.01 BETA
+#minPost 0.02 BETA
 #minPost is a simple to use (not setup :P)
 #minimal CMS. It has a few things in the header.pl
 #and this file (iindex.pl) along with the MySQL
