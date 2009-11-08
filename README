@@ -1,6 +1,34 @@
-minPost is a simple, minimal (and still in beta) CMS/blog for a website. It is writen in Perl, uses a MySQL database (info below) and the MooTools javascript framework to create a minimal interface with a few special effects.
+################################################
+#minPost 0.01 BETA
+#minPost is a simple to use (not setup :P)
+#minimal CMS. It has a few things in the header.pl
+#and this file (iindex.pl) along with the MySQL
+#database settings in settings.pl that need
+#changed to fit your site. The README has the
+#info on the MySQL tables needed.
+#
+#TODO:
+#1)add better comments
+#2)get a more universal theme setup
+#3)make a way to change the theme
+#4)have the title and other info for the site fetched from the database
+#5)make a setup script that takes care of the database and settings
+#6)clean everything up a bit
+#7)make it resistant to code injection
+#8)some other things i can't think of right now
+#
+#Copywrite 2009 by Joshua Ashby
+#joshuaashby at joshashby dot com
+#joshuaashby@joshashby.com
+#http://joshashby.com
+#http://github.com/JoshAshby
+#licensed under the Creative Commons Non-Commercial License.
+#http://creativecommons.org/licenses/by-nc/3.0/us/
+################################################
 
-Please edit the settings in settings.pl to fit your server setting.
+Please edit the settings in settings.pl to fit your server setting. Please also read the info in the index.pl file.
+
+The title, link bar will need to be changed, they are both in the header.pl file and the links are in the footer.pl file
 
 MySQL database:
 for the first release you will need only 2 tables in your database. Please edit the settings.pl page to fir your servers settings.
@@ -10,6 +38,7 @@ MySQL querys for the tables:
 CREATE TABLE IF NOT EXISTS `pl_content` (
   `id` int(11) NOT NULL,
   `date` date NOT NULL,
+  `title` text NOT NULL,
   `name` text NOT NULL,
   `post` text NOT NULL,
   KEY `id` (`id`)

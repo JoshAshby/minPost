@@ -1,11 +1,11 @@
+#the cms, this checks if your logged in, if you are then it gives you the add a post
+#and edit/delete post commands. if your not logged in, then it just generates the posts
+#with no extra commands
 $n_name = $session->param("username");
 $n_pass = $session->param("pass");
 
-if ($n_pass eq unix_md5_crypt('joshua', $n_pass)) {
-
-if ($n_name eq 'Josh Ashby')
-{
-print "Welcome, $n_name!<br><br>";
+if ($n_pass eq unix_md5_crypt('admin', $n_pass) && $n_name eq 'admin') {
+print "Welcome, {Ad}min to minPost<br><br>";
 
 print <<"ABC";
 
@@ -15,7 +15,37 @@ print <<"ABC";
 <table border=0 cellpadding=0 cellspacing=0>
 <tr><td>Name*:</td><td> <input type=text size=30 name=cmf_name></td></tr>
 <tr><td>Title*:</td><td> <input type=text size=30 name=cmf_title></td></tr>
-<tr><td>Post*:</td><td> <textarea type=text rows=3 cols=30 name=cmf_post></textarea></td></tr>
+<tr><td>Post*:</td><td>
+<script type="text/javascript" src="tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript">
+var tinymceConfigs = [ {theme : "advanced",
+        mode : "none",
+        language : "en",
+        height:"200",
+        width:"100%",
+        theme_advanced_layout_manager : "SimpleLayout",
+        theme_advanced_toolbar_location : "top",
+        theme_advanced_toolbar_align : "left",
+        theme_advanced_buttons1 : "code",
+        theme_advanced_buttons2 : "",
+        theme_advanced_buttons3 : "" },{ theme : "advanced",
+        mode : "none",
+        language : "en",
+        height:"200",
+        width:"100%",
+        theme_advanced_layout_manager : "SimpleLayout",
+        theme_advanced_toolbar_location : "top",
+        theme_advanced_toolbar_align : "left"}];
+
+function tinyfy(settingid,el_id) {
+    tinyMCE.settings = tinymceConfigs[settingid];
+    tinyMCE.execCommand('mceAddControl', true, el_id);
+}
+</script>
+<script type="text/javascript">
+tinyfy(0,'ed1')
+</script>
+<textarea name=cmf_post id="ed1"></textarea></td></tr>
 <tr><td></td><td><input type=submit border=0 value=\"Add\"></td></tr>
 </table>
 </form>
@@ -65,26 +95,34 @@ if($cmf_name && $cmf_post && $cmf_title && $n_name eq 'Josh Ashby' && $n_pass eq
 	@cmf_date = ($year, $month, $day);
 	$cmn_date = join("-", @cmf_date);
 
-	$querycmw = "INSERT INTO $contentname VALUES ('$cmf_id', '$cmn_date', '$cmf_name', '<h4 class=\"toggler\">$cmf_title</h4><div class=\"element\">$cmf_post</div><br>')";#connect to the
-	$query_handlecmw = $connect->prepare($querycmw);#db and add the new data from the form (below)
+	$querycmw = "INSERT INTO $contentname VALUES ('$cmf_id', '$cmn_date', '$cmf_title', '$cmf_name', '$cmf_post')";
+	$query_handlecmw = $connect->prepare($querycmw);
 	$query_handlecmw->execute();
 	$query_handlecmw->finish();
 
 }
 
 
-$querycms = "SELECT * FROM $contentname ORDER BY id desc";#re-read the data including the new data and print it out
+$querycms = "SELECT * FROM $contentname ORDER BY id desc";
 $query_handlecms = $connect->prepare($querycms);
 $query_handlecms->execute();
-$query_handlecms->bind_columns(undef, \$cmsid, \$cmsdate, \$cmsname, \$cmspost);
+$query_handlecms->bind_columns(undef, \$cmsid, \$cmsdate, \$cmstitle, \$cmsname, \$cmspost);
 print "<div id=\"accordion\">";
 while($query_handlecms->fetch()) {
-	print "$cmsdate .::. $cmsname<br> $cmspost";
+	print <<"ABC"; 
+
+$cmsdate .::. $cmsname<br>
+<h4 class="toggler">$cmstitle</h4>
+<div class="element">$cmspost<br>
+
+ABC
+
 if ($n_pass eq unix_md5_crypt('joshua', $n_pass)) {
 if ($n_name eq 'Josh Ashby') {
+
 print <<"ABC";
 
-<table height="10px">
+<table>
 <tr>
 <td>
 <p1>
@@ -105,10 +143,16 @@ Post ID: $cmsid
 </td>
 </tr>
 </table>
+</div>
 
 ABC
 
-}}
 }
+} else {
 print "</div>";
+}
+}
+
+print "</div>";
+
 $query_handlecms->finish();

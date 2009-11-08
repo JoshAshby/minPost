@@ -1,3 +1,4 @@
+#generates the comments field and displays them.
 if($f_name && $f_email) {#if you enter both a name and email
 	$queryn = "SELECT MAX(id) FROM $tablename";#connect to the db and get the max id number
 	$query_handlen = $connect->prepare($queryn);
@@ -28,7 +29,9 @@ if($f_name && $f_email) {#if you enter both a name and email
 	$query_handler->execute();
 	$query_handler->bind_columns(undef, \$id, \$date, \$name, \$email, \$post);
 	while($query_handler->fetch()) {
-		print "On $date, $name Said:<br> $post <br><br>";#will print out something like "On 2009-10-22, Joshua Ashby said:"
+	#you can change how the comments are formated in the following line.
+		print "On $date, $name Said:<br> $post <br><br>";
+	#will print out something like "On 2009-10-22, Joshua Ashby said:"
 	}
 	$query_handler->finish(); $connect->disconnect();#finish the query and close the connection to the database
 } else {#if there is no data in the form

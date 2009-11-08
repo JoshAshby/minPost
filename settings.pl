@@ -1,10 +1,9 @@
-#MySQL database settings
+#change these settings to fit your MySQL server settings.
 $platform = "mysql";
-$database = "perl";
+$database = "joshashb_perl";
 $host = "localhost";
-$port = "3306";
 $tablename = "pl_db";
 $contentname = "pl_content";
-$user = "root";
+$user = "joshashb_root";
 $pw = "speeddyy5";
-$dsn = "dbi:$platform:$database:$host:$port";
+$dsn = "dbi:$platform:$database:$host";

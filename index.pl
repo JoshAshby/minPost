@@ -1,14 +1,32 @@
 #!/usr/bin/perl
 ################################################
-#Project Bouncing Off Bumpers "BOB" Website code
-#Joshua Ashby 2009-10-22 (YYMMDD)
-#this page, and the css and images will produce
-#a dynamic website that will give users the 
-#ability to comment on the page, and possibly for
-#me, the admin, to post, and change the paragraphs
-#that the users can read on bob.
+#minPost 0.01 BETA
+#minPost is a simple to use (not setup :P)
+#minimal CMS. It has a few things in the header.pl
+#and this file (iindex.pl) along with the MySQL
+#database settings in settings.pl that need
+#changed to fit your site. The README has the
+#info on the MySQL tables needed.
+#
+#TODO:
+#1)add better comments
+#2)get a more universal theme setup
+#3)make a way to change the theme
+#4)have the title and other info for the site fetched from the database
+#5)make a setup script that takes care of the database and settings
+#6)clean everything up a bit
+#7)make it resistant to code injection
+#8)some other things i can't think of right now
+#
+#Copywrite 2009 by Joshua Ashby
+#joshuaashby at joshashby dot com
+#joshuaashby@joshashby.com
+#http://joshashby.com
+#http://github.com/JoshAshby
+#licensed under the Creative Commons Non-Commercial License.
+#http://creativecommons.org/licenses/by-nc/3.0/us/
 ################################################
-#these use set up the moduals that perl will use
+#These use set up the moduals that perl will use
 use DBI;
 use DBD::mysql;
 use Time::localtime;

@@ -14,22 +14,6 @@ $id=CGI::escapeHTML($form->param("id"));
 
 $session = CGI::Session->load() or die CGI::Session->errstr();
 
-if ($l_name && $l_pass)
-{
-$session->param('username', $l_name);
-my @salt = ( '.', '/', 0 .. 9, 'A' .. 'Z', 'a' .. 'z' );
-my $crypthash = unix_md5_crypt($l_pass, gensalt(8));
-$session->param('pass', $crypthash);
-sub gensalt {
-  my $count = shift;
-  my $salt;
-  for (1..$count) {
-    $salt .= (@salt)[rand @salt];
-  }
-  return $salt;
-}
-}
-
 if ($session->is_expired)
 {
     print $session->header();
@@ -69,7 +53,7 @@ do 'header.pl';
 $n_name = $session->param("username");
 $n_pass = $session->param("pass");
 
-if ($n_pass eq unix_md5_crypt('joshua', $n_pass) && $n_name eq 'Josh Ashby') {
+if ($n_pass eq unix_md5_crypt('admin', $n_pass) && $n_name eq 'admin') {
 if ($id) {
 
 $query = "DELETE FROM $contentname WHERE id=\"$id\"";
