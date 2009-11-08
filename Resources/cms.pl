@@ -2,7 +2,6 @@ $n_name = $session->param("username");
 $n_pass = $session->param("pass");
 
 if ($n_pass eq unix_md5_crypt('joshua', $n_pass) && $n_name eq 'Josh Ashby') {
-
 print "Welcome, $n_name!<br><br>";
 
 print <<"ABC";
@@ -52,7 +51,7 @@ tinyfy(0,'ed1')
 
 ABC
 
-} else {
+}else{
 
 print <<"ABC";
 
@@ -114,6 +113,9 @@ print <<"ABC";
 $cmsdate .::. $cmsname<br>
 <h4 class=\"toggler\">$cmstitle</h4>
 <div class=\"element\">$cmspost<br>
+<table>
+<tr>
+<td>
 
 ABC
 
@@ -121,9 +123,6 @@ if ($n_pass eq unix_md5_crypt('joshua', $n_pass) && $n_name eq 'Josh Ashby') {
 
 print <<"ABC";
 
-<table>
-<tr>
-<td>
 <p1>
 Post ID: $cmsid
 </p1>
@@ -141,35 +140,24 @@ Post ID: $cmsid
 </form>
 </td>
 <td>
-<form action=single.pl method=get>
-<input type="hidden" name=postid value=$cmsid>
-<input type=submit border=0 value=\"View post\">
-</form>
-</td>
-</tr>
-</table>
-</div>
-
-ABC
-
-} else {
-print <<"ABC";
-
-<table>
-<tr>
-<td>
-<form action=single.pl method=get>
-<input type="hidden" name=postid value=$cmsid>
-<input type=submit border=0 value=\"View post\">
-</form>
-</td>
-</tr>
-</table>
-</div>
 
 ABC
 
 }
+
+print <<"ABC";
+
+<form action=single.pl method=get>
+<input type="hidden" name=postid value=$cmsid>
+<input type=submit border=0 value=\"View Post\">
+</form>
+</td> 
+</tr>
+</table>
+</div>
+
+ABC
+
 }
 
 print "</div>";

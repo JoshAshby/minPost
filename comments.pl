@@ -1,17 +1,16 @@
-#generates the comments field and displays them.
-if($f_name && $f_email) {#if you enter both a name and email
-	$queryn = "SELECT MAX(id) FROM $tablename";#connect to the db and get the max id number
+if($f_name && $f_email && $postid) {
+	$queryn = "SELECT postid,MAX(id) FROM $tablename WHERE postid=$postid";
 	$query_handlen = $connect->prepare($queryn);
 	$query_handlen->execute();
-	$query_handlen->bind_columns(\$n_id);
+	$query_handlen->bind_columns(undef, \$npostid, \$n_id);
 
-	while($query_handlen->fetch()) {#get the max id number and add 1 to it, this will be for the next data entry
+	while($query_handlen->fetch()) {
 		$f_id = $n_id + 1;
 	}
 
-	$query_handlen->finish();#finish that query
+	$query_handlen->finish();
 
-	$years = localtime->year();#this builds the time stamp for the db, in YYMMDD format
+	$years = localtime->year();
 	$year = 1900 + $years;
 	$day = localtime->mday();
 	$months = localtime->mon();
@@ -19,25 +18,31 @@ if($f_name && $f_email) {#if you enter both a name and email
 	@f_date = ($year, $month, $day);
 	$n_date = join("-", @f_date);
 
-	$queryw = "INSERT INTO $tablename VALUES ('$f_id', '$n_date', '$f_name', '$f_email', '$f_post')";#connect to the
-	$query_handlew = $connect->prepare($queryw);#db and add the new data from the form (below)
+	$queryw = "INSERT INTO $tablename VALUES ('$f_id', '$n_date', '$f_name', '$f_email', '$f_post', '$postid')";
+	$query_handlew = $connect->prepare($queryw);
 	$query_handlew->execute();
 	$query_handlew->finish();
 
-	$queryr = "SELECT * FROM $tablename ORDER BY id desc";#re-read the data including the new data and print it out
+	$queryr = "SELECT * FROM $tablename WHERE postid=$postid ORDER BY id desc";
 	$query_handler = $connect->prepare($queryr);
 	$query_handler->execute();
-	$query_handler->bind_columns(undef, \$id, \$date, \$name, \$email, \$post);
-	while($query_handler->fetch()) {
-	#you can change how the comments are formated in the following line.
-		print "On $date, $name Said:<br> $post <br><br>";
-	#will print out something like "On 2009-10-22, Joshua Ashby said:"
-	}
-	$query_handler->finish(); $connect->disconnect();#finish the query and close the connection to the database
-} else {#if there is no data in the form
-	while($query_handle->fetch()) {#get the data in the database and print it out
-		print "On $date, $name Said:<br> $post <br>";#prints out like above
-	}
-}
+	$query_handler->bind_columns(undef, \$id, \$date, \$name, \$email, \$post, \$n_postid);
 
-$query_handle->finish(); $connect->disconnect();#finish the first query and close the database connection
+	while($query_handler->fetch()) {
+		print "<br>On $date, $name Said:<br> $post <br>";
+	}
+
+	$query_handler->finish();
+
+} else {
+	$queryr = "SELECT * FROM $tablename WHERE postid=$postid ORDER BY id desc";
+	$query_handler = $connect->prepare($queryr);
+	$query_handler->execute();
+	$query_handler->bind_columns(undef, \$id, \$date, \$name, \$email, \$post, \$n_postid);
+
+	while($query_handler->fetch()) {
+		print "<br>On $date, $name Said:<br> $post <br>";
+	}
+
+	$query_handler->finish();
+}

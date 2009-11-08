@@ -1,4 +1,3 @@
-#!/usr/bin/perl
 BEGIN {
     my $homedir = ( getpwuid($>) )[7];
     my @user_include;
