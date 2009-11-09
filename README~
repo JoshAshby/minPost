@@ -1,5 +1,5 @@
 ################################################
-#minPost 0.01 BETA
+#minPost 0.02 BETA
 #minPost is a simple to use (not setup :P)
 #minimal CMS. It has a few things in the header.pl
 #and this file (iindex.pl) along with the MySQL
@@ -35,6 +35,28 @@ for the first release you will need only 2 tables in your database. Please edit 
 
 MySQL querys for the tables:
 
+
+-- phpMyAdmin SQL Dump
+-- version 3.2.0.1
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: Nov 09, 2009 at 03:14 AM
+-- Server version: 5.1.37
+-- PHP Version: 5.3.0
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+--
+-- Database: `perl`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pl_content`
+--
+
 CREATE TABLE IF NOT EXISTS `pl_content` (
   `id` int(11) NOT NULL,
   `date` date NOT NULL,
@@ -44,6 +66,16 @@ CREATE TABLE IF NOT EXISTS `pl_content` (
   KEY `id` (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `pl_content`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pl_db`
+--
 
 CREATE TABLE IF NOT EXISTS `pl_db` (
   `id` int(11) NOT NULL,
@@ -51,5 +83,49 @@ CREATE TABLE IF NOT EXISTS `pl_db` (
   `name` text NOT NULL,
   `email` text NOT NULL,
   `post` text NOT NULL,
+  `postid` int(11) NOT NULL,
   KEY `date` (`date`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `pl_db`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pl_links`
+--
+
+CREATE TABLE IF NOT EXISTS `pl_links` (
+  `links` text NOT NULL,
+  `linkname` text NOT NULL,
+  `class` text NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `pl_links`
+--
+
+INSERT INTO `pl_links` (`links`, `linkname`, `class`) VALUES
+('http://joshashby.com', 'Linux And Sci', ''),
+('./', 'Home', 'current');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pl_site`
+--
+
+CREATE TABLE IF NOT EXISTS `pl_site` (
+  `title` text NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `pl_site`
+--
+
+INSERT INTO `pl_site` (`title`) VALUES
+('Project: BOB - Bouncing Off Bumpers');
+

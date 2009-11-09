@@ -1,5 +1,5 @@
 ################################################
-#minPost 0.02 BETA
+#minPost 0.03 BETA
 #minPost is a simple to use (not setup :P)
 #minimal CMS. It has a few things in the header.pl
 #and this file (iindex.pl) along with the MySQL
@@ -41,7 +41,7 @@ MySQL querys for the tables:
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 08, 2009 at 06:07 PM
+-- Generation Time: Nov 09, 2009 at 03:14 AM
 -- Server version: 5.1.37
 -- PHP Version: 5.3.0
 
@@ -66,6 +66,10 @@ CREATE TABLE IF NOT EXISTS `pl_content` (
   KEY `id` (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `pl_content`
+--
+
 
 -- --------------------------------------------------------
 
@@ -82,3 +86,46 @@ CREATE TABLE IF NOT EXISTS `pl_db` (
   `postid` int(11) NOT NULL,
   KEY `date` (`date`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `pl_db`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pl_links`
+--
+
+CREATE TABLE IF NOT EXISTS `pl_links` (
+  `links` text NOT NULL,
+  `linkname` text NOT NULL,
+  `class` text NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `pl_links`
+--
+
+INSERT INTO `pl_links` (`links`, `linkname`, `class`) VALUES
+('http://joshashby.com', 'Linux And Sci', ''),
+('./', 'Home', 'current');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pl_site`
+--
+
+CREATE TABLE IF NOT EXISTS `pl_site` (
+  `title` text NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `pl_site`
+--
+
+INSERT INTO `pl_site` (`title`) VALUES
+('Project: BOB - Bouncing Off Bumpers');
+

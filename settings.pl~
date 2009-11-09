@@ -1,9 +1,9 @@
 #MySQL database settings
 $platform = "mysql";
-$database = "joshashb_perl";
+$database = "perl";
 $host = "localhost";
 $port = "3306";
-$user = "joshashb_root";
+$user = "root";
 $pw = "speeddyy5";
 $dsn = "dbi:$platform:$database:$host:$port";
 $tablename = "pl_db";

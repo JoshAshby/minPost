@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 ################################################
-#minPost 0.02 BETA
+#minPost 0.03 BETA
 #minPost is a simple to use (not setup :P)
 #minimal CMS. It has a few things in the header.pl
 #and this file (iindex.pl) along with the MySQL
@@ -12,11 +12,12 @@
 #1)add better comments (done)
 #2)get a more universal theme setup
 #3)make a way to change the theme
-#4)have the title and other info for the site fetched from the database
-#5)make a setup script that takes care of the database and settings
+#4)have the title and other info for the site fetched from the database (done)
+#5)make a setup script that takes care of the database and settings (semi done)
 #6)clean everything up a bit
 #7)make it resistant to code injection
 #8)some other things i can't think of right now
+#9)admin panel (semi done also)
 #
 #Copywrite 2009 by Joshua Ashby
 #joshuaashby at joshashby dot com

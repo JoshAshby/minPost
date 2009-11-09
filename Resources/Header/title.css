@@ -1,0 +1,40 @@
+#wrapper {
+	margin: 0px auto;
+	overflow: hidden;
+	width: 800px;
+	height: 120px;
+	position: relative;
+}
+ 
+#inner {
+	width: 800px;
+	height: 120px;
+	background-image: url(header1.jpg);
+	position: relative;
+}
+ 
+#content1 {
+	right: 150px; 
+	top: 20px;
+}
+
+.scrolling-content {
+	background: transparent url(bubble.png) top left no-repeat;
+	width: 139px;
+	height: 73px;
+	text-align: center;
+	position: absolute;
+}
+ 
+.scrolling-content h1 { 
+	color: #fff;
+	font-size: 18px;
+}
+.scrolling-content h2 { 
+	color: #fff;
+	font-size: 14px;
+}
+.scrolling-content a { 
+	color: #fff;
+	font-size: 18px;
+}

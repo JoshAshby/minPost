@@ -26,7 +26,8 @@ Fields marked with * are required to post a comment.
 </div>
 </div>
 <div id="bottom">
-<a href="/">Home</a>
+<a href="./">Home</a> | 
+<a href="admin.pl">Admin</a> | 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/us/80x15.png" /></a>
 </div>
 </td>
@@ -45,7 +46,8 @@ print <<"ABC";
 </p1>
 </div>
 <div id="bottom">
-<a href="/">Home</a>
+<a href="./">Home</a> | 
+<a href="admin.pl">Admin</a> | 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/us/80x15.png" /></a>
 </div>
 </td>
