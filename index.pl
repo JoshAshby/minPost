@@ -12,6 +12,7 @@ my $form=new CGI;
 my $title=CGI::escapeHTML($form->param("title"));
 my $align=CGI::escapeHTML($form->param("align"));
 my $photo=CGI::escapeHTML($form->param("photo"));
+my $color=CGI::escapeHTML($form->param("color"));
 
 #setup all the data for the database, this bit will eventually be replaced by minPost's setting package when merged
 my $platform = "mysql";
@@ -23,25 +24,28 @@ my $user = "root";
 my $pw = "speeddyy5";
 my $dsn = "dbi:$platform:$database:$host:$port";
 my $connect = DBI->connect($dsn, $user, $pw) or die "Couldn't connect to database!" . DBI->errstr;
+my $cm_id;
+my $cm_title;
+my $cm_align;
+my $cm_photo;
+my $cm_color;
 
 #update the title and alignment SQL query
 my $sth = $connect->prepare_cached(<<"SQL");
 UPDATE pl_site
-SET title = ?, align = ?, photo = ?
+SET title = ?, align = ?, photo = ?, color = ?
 WHERE id = '0'
 SQL
 
 #if there is a new title thats been typed in, enter it into the database along with the alignment
-if ($title){
-$sth->execute($title, $align, $photo);
+if ($title && $align && $photo){
+$sth->execute($title, $align, $photo, $color);
 }
-
-my  $cm_id, $cm_title, $cm_align, $cm_photo
 
 #get the title and alignment to use for the page
 my $query_handle = $connect->prepare_cached("SELECT * FROM $tablename ORDER BY id desc");
 $query_handle->execute();
-$query_handle->bind_columns(undef, $cm_id, $cm_title, $cm_align, $cm_photo);
+$query_handle->bind_columns(undef, \$cm_id, \$cm_title, \$cm_align, \$cm_photo, \$cm_color);
 
 print "Content-Type: text/html\n\n";
 
@@ -57,8 +61,7 @@ print<<"abc";
 <body>
 <div class="container">
 <div class="header" align="$cm_align" style="background:url($cm_photo);">
-<h1 class="fancy_head">$cm_title</h1>
-<pre>$title $align</pre>
+<h1 class="fancy_head" color="$cm_color">$cm_title</h1>
 </div>
 abc
 }
@@ -76,7 +79,8 @@ print<<"abc";
 <tr><td>Photo:</td><td><select name=photo>
 abc
 
-my @files = <images/headers/*>;
+#print all the options for photos by listing each photo in "images/headers/" as an option for the drop down box
+my @files = <images/headers/*.jpg>;
 foreach my $file (@files) {
 print <<"ABC";
  <option value="$file">$file</option>
@@ -85,6 +89,11 @@ ABC
 
 print<<"abc";
 </td></tr>
+<tr><td>Text Color:</td><td> <select name=color>
+ <option value="white">White</option>
+ <option value="grey">Grey</option>
+ <option value="black">Black</option>
+</select></td></tr>
 <tr><td></td><td><input type=submit border=0 value=\"Submit\"></td></tr>
 </table>
 </form>

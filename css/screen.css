@@ -237,9 +237,6 @@ hr.space {background:#fff;color:#fff;}
 /*** FANCY SERIF ***/
 .fancy { color: #666; font-family: "Warnock Pro", "Goudy Old Style","Palatino","Book Antiqua", Georgia, serif; font-style: italic; font-weight: normal; }
 
-
-.fancy_head { color: #666; font-family: "Warnock Pro", "Goudy Old Style","Palatino","Book Antiqua", Georgia, serif; font-style: italic; font-weight: normal; font-size: 4em; position:relative; top:+20px; padding-right: 20px; padding-left: 20px; }
-
 /*** SMALL CAPS ***/
 .caps { font-variant: small-caps; letter-spacing: 1px; text-transform: lowercase; font-size:1.2em; font-weight:bold; padding:0 2px; }
 
@@ -328,3 +325,10 @@ body .negative { color:#d12f19; }
 a.negative:hover, button.negative:hover { background:#fbe3e4; border:1px solid #fbc2c4; color:#d12f19; }
 a.negative:active, button.negative:active { background-color:#d12f19; border:1px solid #d12f19; color:#fff; }
 
+/* NEW FONTS
+JoshAshby 7-15-10*/
+h1.fancy_head[color="grey"] { color: #666; font-family: "Warnock Pro", "Goudy Old Style","Palatino","Book Antiqua", Georgia, serif; font-style: italic; font-weight: normal; font-size: 4em; position:relative; top:+20px; padding-right: 20px; padding-left: 20px; }
+
+h1.fancy_head[color="black"] { color: #000; font-family: "Warnock Pro", "Goudy Old Style","Palatino","Book Antiqua", Georgia, serif; font-style: italic; font-weight: normal; font-size: 4em; position:relative; top:+20px; padding-right: 20px; padding-left: 20px; }
+
+h1.fancy_head[color="white"] { color: #fff; font-family: "Warnock Pro", "Goudy Old Style","Palatino","Book Antiqua", Georgia, serif; font-style: italic; font-weight: normal; font-size: 4em; position:relative; top:+20px; padding-right: 20px; padding-left: 20px; }
