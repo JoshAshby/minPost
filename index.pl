@@ -7,12 +7,12 @@ use CGI;
 use DBI;
 use DBD::mysql;
 
-our $form=new CGI;
+#setup stuff for the forms
+my $form=new CGI;
 my $title=CGI::escapeHTML($form->param("title"));
 my $align=CGI::escapeHTML($form->param("align"));
 
-my $id = 0;
-
+#setup all the data for the database, this bit will eventually be replaced by minPost's setting package when merged
 my $platform = "mysql";
 my $database = "perl";
 my $host = "localhost";
@@ -23,22 +23,26 @@ my $pw = "speeddyy5";
 my $dsn = "dbi:$platform:$database:$host:$port";
 my $connect = DBI->connect($dsn, $user, $pw) or die "Couldn't connect to database!" . DBI->errstr;
 
-our $sth = $connect->prepare_cached(<<"SQL");
+#update the title and alignment SQL query
+my $sth = $connect->prepare_cached(<<"SQL");
 UPDATE pl_site
 SET title = ?, align = ?
 WHERE id = '0'
 SQL
 
+#if there is a new title thats been typed in, enter it into the database along with the alignment
 if ($title){
 $sth->execute($title, $align);
 }
 
-our $query_handle = $connect->prepare_cached("SELECT * FROM $tablename ORDER BY id desc");
+#get the title and alignment to use for the page
+my $query_handle = $connect->prepare_cached("SELECT * FROM $tablename ORDER BY id desc");
 $query_handle->execute();
 $query_handle->bind_columns(undef, \my $cm_id, \my $cm_title, \my $cm_align);
 
 print "Content-Type: text/html\n\n";
 
+#then place the info in the page
 while($query_handle->fetch()) {
 print<<"abc";
 <html>
