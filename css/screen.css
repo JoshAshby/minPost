@@ -99,9 +99,9 @@ body {margin:1.5em 0;}
 div.span-1, div.span-2, div.span-3, div.span-4, div.span-5, div.span-6, div.span-7, div.span-8, div.span-9, div.span-10, div.span-11, div.span-12, div.span-13, div.span-14, div.span-15, div.span-16, div.span-17, div.span-18, div.span-19, div.span-20, div.span-21, div.span-22, div.span-23 {float:left;margin-right:10px;}
 div.span-24 {float:left;}
 
-div.header[align="left"] {float:center;text-align:left;}
-div.header[align="right"] {float:center;text-align:right;}
-div.header[align="center"] {float:center;text-align:center;}
+div.header[align="left"] {float:center;text-align:left;height:200px;}
+div.header[align="right"] {float:center;text-align:right;height:200px;}
+div.header[align="center"] {float:center;text-align:center;height:200px;}
 
 div.last {margin-right:0;}
 .span-1 {width:30px;}
@@ -236,6 +236,9 @@ hr.space {background:#fff;color:#fff;}
 
 /*** FANCY SERIF ***/
 .fancy { color: #666; font-family: "Warnock Pro", "Goudy Old Style","Palatino","Book Antiqua", Georgia, serif; font-style: italic; font-weight: normal; }
+
+
+.fancy_head { color: #666; font-family: "Warnock Pro", "Goudy Old Style","Palatino","Book Antiqua", Georgia, serif; font-style: italic; font-weight: normal; font-size: 4em; position:relative; top:+20px; padding-right: 20px; padding-left: 20px; }
 
 /*** SMALL CAPS ***/
 .caps { font-variant: small-caps; letter-spacing: 1px; text-transform: lowercase; font-size:1.2em; font-weight:bold; padding:0 2px; }

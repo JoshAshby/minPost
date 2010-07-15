@@ -11,6 +11,7 @@ use DBD::mysql;
 my $form=new CGI;
 my $title=CGI::escapeHTML($form->param("title"));
 my $align=CGI::escapeHTML($form->param("align"));
+my $photo=CGI::escapeHTML($form->param("photo"));
 
 #setup all the data for the database, this bit will eventually be replaced by minPost's setting package when merged
 my $platform = "mysql";
@@ -26,19 +27,21 @@ my $connect = DBI->connect($dsn, $user, $pw) or die "Couldn't connect to databas
 #update the title and alignment SQL query
 my $sth = $connect->prepare_cached(<<"SQL");
 UPDATE pl_site
-SET title = ?, align = ?
+SET title = ?, align = ?, photo = ?
 WHERE id = '0'
 SQL
 
 #if there is a new title thats been typed in, enter it into the database along with the alignment
 if ($title){
-$sth->execute($title, $align);
+$sth->execute($title, $align, $photo);
 }
+
+my  $cm_id, $cm_title, $cm_align, $cm_photo
 
 #get the title and alignment to use for the page
 my $query_handle = $connect->prepare_cached("SELECT * FROM $tablename ORDER BY id desc");
 $query_handle->execute();
-$query_handle->bind_columns(undef, \my $cm_id, \my $cm_title, \my $cm_align);
+$query_handle->bind_columns(undef, $cm_id, $cm_title, $cm_align, $cm_photo);
 
 print "Content-Type: text/html\n\n";
 
@@ -53,8 +56,8 @@ print<<"abc";
 </head>
 <body>
 <div class="container">
-<div class="header" align="$cm_align">
-<h1 class="fancy">$cm_title</h1>
+<div class="header" align="$cm_align" style="background:url($cm_photo);">
+<h1 class="fancy_head">$cm_title</h1>
 <pre>$title $align</pre>
 </div>
 abc
@@ -66,10 +69,22 @@ print<<"abc";
 <table border=0 cellpadding=0 cellspacing=0>
 <tr><td>Title:</td><td> <input type=text size=20 name=title></td></tr>
 <tr><td>Align:</td><td> <select name=align>
- <option selected="selected" value="left">Left</option>
+ <option value="left">Left</option>
  <option value="center">Center</option>
  <option value="right">Right</option>
 </select></td></tr>
+<tr><td>Photo:</td><td><select name=photo>
+abc
+
+my @files = <images/headers/*>;
+foreach my $file (@files) {
+print <<"ABC";
+ <option value="$file">$file</option>
+ABC
+}
+
+print<<"abc";
+</td></tr>
 <tr><td></td><td><input type=submit border=0 value=\"Submit\"></td></tr>
 </table>
 </form>
