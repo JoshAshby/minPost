@@ -1,29 +1,41 @@
 #!/usr/bin/perl
 
+use warnings;
+use strict;
+
 use CGI;
 use DBI;
 use DBD::mysql;
 
-$form=new CGI;
-$title=CGI::escapeHTML($form->param("title"));
-$align=CGI::escapeHTML($form->param("align"));
+our $form=new CGI;
+my $title=CGI::escapeHTML($form->param("title"));
+my $align=CGI::escapeHTML($form->param("align"));
 
-$id = 0;
+my $id = 0;
 
-$platform = "mysql";
-$database = "perl";
-$host = "localhost";
-$port = "3306";
-$tablename = "pl_site";
-$user = "root";
-$pw = "speeddyy5";
-$dsn = "dbi:$platform:$database:$host:$port";
-$connect = DBI->connect($dsn, $user, $pw) or die "Couldn't connect to database!" . DBI->errstr;
+my $platform = "mysql";
+my $database = "perl";
+my $host = "localhost";
+my $port = "3306";
+my $tablename = "pl_site";
+my $user = "root";
+my $pw = "speeddyy5";
+my $dsn = "dbi:$platform:$database:$host:$port";
+my $connect = DBI->connect($dsn, $user, $pw) or die "Couldn't connect to database!" . DBI->errstr;
 
-$query = "SELECT * FROM $tablename ORDER BY id desc";
-   $query_handle = $connect->prepare($query);
-   $query_handle->execute();
-   $query_handle->bind_columns(undef, \$cm_id, \$cm_title, \$cm_align);
+our $sth = $connect->prepare_cached(<<"SQL");
+UPDATE pl_site
+SET title = ?, align = ?
+WHERE id = '0'
+SQL
+
+if ($title){
+$sth->execute($title, $align);
+}
+
+our $query_handle = $connect->prepare_cached("SELECT * FROM $tablename ORDER BY id desc");
+$query_handle->execute();
+$query_handle->bind_columns(undef, \my $cm_id, \my $cm_title, \my $cm_align);
 
 print "Content-Type: text/html\n\n";
 
@@ -39,7 +51,12 @@ print<<"abc";
 <div class="container">
 <div class="header" align="$cm_align">
 <h1 class="fancy">$cm_title</h1>
+<pre>$title $align</pre>
 </div>
+abc
+}
+
+print<<"abc";
 <div id="hide">
 <form action=index.pl method=post>
 <table border=0 cellpadding=0 cellspacing=0>
@@ -64,12 +81,3 @@ print<<"abc";
 </body>
 </html>
 abc
-};
-$query_handle->finish();
-
-$queryc = "INSERT INTO $tablename VALUES ('$id', '$title', '$align')";
-	$query_handlec = $connect->prepare($queryc);
-	$query_handlec->execute();
-	$query_handlec->finish();
-
-$connect->disconnect();
