@@ -25,8 +25,9 @@ my $platform = "mysql";
 my $database = "perl";
 my $host = "localhost";
 my $port = "3306";
-my $info = "pl_site";
-my $login = "pl_login";
+my $info_db = "pl_site";
+my $login_db = "pl_login";
+my $content_db = "pl_content";
 my $user = "root";
 my $pw = "speeddyy5";
 my $dsn = "dbi:$platform:$database:$host:$port";
@@ -48,18 +49,29 @@ my $first = 0;
 my $othersalt;
 my $crypthash;
 
+my $c_id;
+my $c_date;
+my $c_title;
+my $c_author;
+my $c_post;
+
 #update the title and alignment SQL query
 my $sth = $connect->prepare_cached(<<"SQL");
-UPDATE $info
+UPDATE $info_db
 SET title = ?, align = ?, photo = ?, color = ?
 WHERE id = '0'
 SQL
 
 #get the login info query
-my $get_pass = $connect->prepare_cached("SELECT * FROM $login ORDER BY id desc");
+my $get_pass = $connect->prepare_cached("SELECT * FROM $login_db ORDER BY id desc");
 
 #get the hash query
-my $get_hash = $connect->prepare_cached("SELECT pass FROM $login WHERE 1");
+my $get_hash = $connect->prepare_cached("SELECT pass FROM $login_db WHERE 1");
+
+#get the content for the main area
+my $content = $connect->prepare_cached("SELECT * FROM $content_db ORDER BY id desc");
+
+my $links = $connect->prepare_cached("SELECT * FROM $link_db ORDER BY
 
 #session stuff
 my $sid = $form->cookie("CGISESSID") || undef;
@@ -73,7 +85,7 @@ $session->param('username', $name);
 if ($first){
 $othersalt = gensalt(8);
 $crypthash = unix_md5_crypt('speeddyy5', $othersalt);
-my $add_pass = $connect->prepare_cached("UPDATE $login SET pass = ?, salt = ? WHERE id = '0'");
+my $add_pass = $connect->prepare_cached("UPDATE $login_db SET pass = ?, salt = ? WHERE id = '0'");
 $add_pass->execute($crypthash, $othersalt);
 $session->param('pass', $crypthash);
 } else {
@@ -92,6 +104,7 @@ sub gensalt {
   }
   return $salt;
 }
+$session->expire('+1h');
 my $n_name = $session->param("username");
 my $n_pass = $session->param("pass");
 $get_pass->execute();
@@ -118,22 +131,24 @@ ABC
 exit(0);
 }
 if ($session->is_empty){
-   $session = $session->new() or die $session->errstr;
+$session = $session->new() or die $session->errstr;
+$session->expire('+1h');
 }
 #if they pressed the logout button clear the session and set log to false
 if ($log) {
 $session->param('log', '0');
-$session = $session->new() or die $session->errstr;
+$session->clear(['username', 'pass']);
+$session->delete();
 }
 print $session->header();
 
 #if there is a new title thats been typed in, enter it into the database along with the alignment
-if ($title && $align && $photo){
+if ($title){
 $sth->execute($title, $align, $photo, $color);
 }
 
 #get the title and alignment to use for the page
-my $query_handle = $connect->prepare_cached("SELECT * FROM $info ORDER BY id desc");
+my $query_handle = $connect->prepare_cached("SELECT * FROM $info_db ORDER BY id desc");
 $query_handle->execute();
 $query_handle->bind_columns(undef, \$cm_id, \$cm_title, \$cm_align, \$cm_photo, \$cm_color);
 
@@ -154,6 +169,7 @@ print<<"abc";
 <table border=0 cellpadding=0 cellspacing=0>
 <tr>
 abc
+}
 #if their logged in let them edit the page header, if not show the login boxes
 if ($session->param('log')){
 print<<"abc";
@@ -171,8 +187,13 @@ print<<"abc";
 </form>
 </div>
 abc
+$links->execute();
+$links->bind_columns(undef, \$l_link, \$l_name);
+while($content->fetch()) {
+print<<"abc";
+<a href="$l_link">$l_name</a>
+abc
 }
-
 #if they are loged in let them edit the header, if not then don't show the edit button
 if ($session->param('log')){
 print<<"abc";
@@ -208,8 +229,18 @@ print<<"abc";
 </form>
 </div>
 <input type=button id="hide-button" value=\"Edit\">
-
 abc
+}
+
+$content->execute();
+$content->bind_columns(undef, \$c_id, \$c_date, \$c_title, \$c_author, \$c_post);
+while($content->fetch()) {
+print <<"ABC"; 
+<h4>$c_title</h4>
+From: $c_date By: $c_author<br>
+$c_post<br>
+<br>
+ABC
 }
 
 print<<"abc";
