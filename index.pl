@@ -16,15 +16,9 @@ my $title=CGI::escapeHTML($form->param("title"));
 my $align=CGI::escapeHTML($form->param("align"));
 my $photo=CGI::escapeHTML($form->param("photo"));
 my $color=CGI::escapeHTML($form->param("color"));
-
 my $name=CGI::escapeHTML($form->param("username"));
 my $pass=CGI::escapeHTML($form->param("password"));
-
 my $log=CGI::escapeHTML($form->param("log"));
-
-
-
-my $data;
 
 #setup all the data for the database, this bit will eventually be replaced by minPost's setting package when merged
 my $platform = "mysql";
@@ -37,6 +31,7 @@ my $user = "root";
 my $pw = "speeddyy5";
 my $dsn = "dbi:$platform:$database:$host:$port";
 my $connect = DBI->connect($dsn, $user, $pw) or die "Couldn't connect to database!" . DBI->errstr;
+
 my $cm_id;
 my $cm_title;
 my $cm_align;
@@ -48,7 +43,10 @@ my $lg_pass;
 my $lg_salt;
 my $lg_user;
 
+my $data;
 my $first = 0;
+my $othersalt;
+my $crypthash;
 
 #update the title and alignment SQL query
 my $sth = $connect->prepare_cached(<<"SQL");
@@ -57,18 +55,19 @@ SET title = ?, align = ?, photo = ?, color = ?
 WHERE id = '0'
 SQL
 
+#get the login info query
 my $get_pass = $connect->prepare_cached("SELECT * FROM $login ORDER BY id desc");
 
+#get the hash query
 my $get_hash = $connect->prepare_cached("SELECT pass FROM $login WHERE 1");
 
+#session stuff
 my $sid = $form->cookie("CGISESSID") || undef;
 my $session = new CGI::Session(undef, $sid, {Directory=>'/tmp'});
 my $cookie = $form->cookie(CGISESSID => $session->id);
 print $form->header( -cookie=>$cookie );
 
-my $othersalt;
-my $crypthash;
-
+#if someone typed something into the login boxes then go about checking if it matches info in the database
 if ($name && $pass){
 $session->param('username', $name);
 if ($first){
@@ -93,7 +92,6 @@ sub gensalt {
   }
   return $salt;
 }
-
 my $n_name = $session->param("username");
 my $n_pass = $session->param("pass");
 $get_pass->execute();
@@ -106,12 +104,6 @@ $session->param('log', '0');
 }
 }
 }
-
-if ($log) {
-$session->param('log', '0');
-$session = $session->new() or die $session->errstr;
-}
-
 if ($session->is_expired){
 print $session->header();
 print <<"ABC";
@@ -127,6 +119,11 @@ exit(0);
 }
 if ($session->is_empty){
    $session = $session->new() or die $session->errstr;
+}
+#if they pressed the logout button clear the session and set log to false
+if ($log) {
+$session->param('log', '0');
+$session = $session->new() or die $session->errstr;
 }
 print $session->header();
 
@@ -157,6 +154,7 @@ print<<"abc";
 <table border=0 cellpadding=0 cellspacing=0>
 <tr>
 abc
+#if their logged in let them edit the page header, if not show the login boxes
 if ($session->param('log')){
 print<<"abc";
 <td><input type=hidden value=true name=log>
@@ -175,6 +173,7 @@ print<<"abc";
 abc
 }
 
+#if they are loged in let them edit the header, if not then don't show the edit button
 if ($session->param('log')){
 print<<"abc";
 <div id="hide">
