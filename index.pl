@@ -859,7 +859,7 @@ abc
 }
 print<<"abc";
 <form action=index.pl method=post>
-   <table class="edit">
+   <table class="edit" round=$col_form>
       <tr>
          <td>
             Add a comment:
@@ -870,13 +870,13 @@ print<<"abc";
             Name:
          </td>
          <td>
-            <input type=text name=add_com_name>
+            <input type=text name=add_com_name round=$col_form>
          </td>
          <td>
             Email*:
          </td>
          <td>
-            <input type=text name=add_com_email>
+            <input type=text name=add_com_email round=$col_form>
          </td>
       </tr>
       <tr>
@@ -886,6 +886,7 @@ print<<"abc";
          <td>
             <input type=hidden name=post_id value=$c_id><input type=hidden name=new_com_id value=$com_id><button type=submit class="positive" round=$col_form><img src="images/icons/tick.png" alt=""/>Add comment</button> 
          </td>
+      </tr>
    </table>
 </form>
 </div>
