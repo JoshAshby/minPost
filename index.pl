@@ -876,6 +876,13 @@ print<<"abc";
             <input type=text name=add_com_email>
          </td>
       </tr>
+      <tr>
+         <td colspan=3>
+            <textarea rows="10" cols="50" name=add_com_com></textarea>
+         </td>
+         <td>
+            <input type=hidden name=post_id value=$c_id><input type=hidden name=new_com_id value=$com_id><button type=submit class="positive" round=$col_form><img src="images/icons/tick.png" alt=""/>Add comment</button> 
+         </td>
    </table>
 </form>
 </div>
