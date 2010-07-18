@@ -196,6 +196,11 @@ print $session->header();
 
 $name_top = $session->param('username');
 
+#comment stuff
+if ($add_com_name && $add_com_email) {
+$add_new_comment->execute($new_com_id, $date, $add_com_name, $add_com_email, $add_com_com, $post_id);
+}
+
 if ($session->param('log')){
 #post processing
 if ($post_name) {
@@ -210,9 +215,7 @@ $add_new_post->execute($post_id, $date, $add_post_name, $name_top, $add_post_pos
 }
 
 #comment stuff
-if ($add_com_name && $add_com_email) {
-$add_new_comment->execute($new_com_id, $date, $add_com_name, $add_com_email, $add_com_com, $post_id);
-}
+
 if ($del_com_id) {
 $del_comment->execute($del_com_id, $del_com_postid);
 }
